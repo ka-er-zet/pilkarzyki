@@ -1,0 +1,21 @@
+{
+  "name": "Piłkarzyki na Kartce",
+  "short_name": "Piłkarzyki",
+  "description": "Klasyczna gra w piłkarzyki na kartce, teraz w Twojej przeglądarce!",
+  "start_url": ".",
+  "display": "fullscreen",
+  "background_color": "#f0f0f0",
+  "theme_color": "#6abf69",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

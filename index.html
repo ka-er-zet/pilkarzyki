@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA Meta Tagi -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6abf69">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Piłkarzyki">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <title>Piłkarzyki na Kartce</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Piłkarzyki na Kartce</h1>
+        <p id="status">Zaczyna Gracz 1</p>
+        <canvas id="gameCanvas"></canvas>
+        <button id="newGameBtn">Nowa Gra</button>
+    </div>
+
+    <!-- Modal Zwycięstwa -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2 id="winMessage"></h2>
+            <button id="modalNewGameBtn">Zagraj jeszcze raz</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
