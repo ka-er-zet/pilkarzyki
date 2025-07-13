@@ -286,8 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetX = Math.round(scaledMouseX / GRID_SIZE);
         const targetY = Math.round(scaledMouseY / GRID_SIZE);
 
-        // Debug: sprawdź czy kliknięcie jest w prawidłowych granicach
-        if (targetX >= 0 && targetX < LOGICAL_COLS && targetY >= 0 && targetY < LOGICAL_ROWS) {
+        // Debug: sprawdź czy kliknięcie jest w prawidłowych granicach - uwzględnij bramki
+        if (targetX >= 0 && targetX <= LOGICAL_COLS && targetY >= 0 && targetY <= LOGICAL_ROWS) {
             if (isValidMove(ballPos.x, ballPos.y, targetX, targetY)) {
                 makeMove(targetX, targetY);
             }
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function getValidMoves() {
         const moves = [];
         const { x, y } = ballPos;
-        // Sprawdź wszystkich 8 sąsiadów
+        // Sprawdź wszystkich 8 sąsiadów, włączając bramki
         for (let dy = -1; dy <= 1; dy++) {
             for (let dx = -1; dx <= 1; dx++) {
                 if (dx === 0 && dy === 0) continue; // Pomiń aktualną pozycję
@@ -344,8 +344,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetX = x + dx;
                 const targetY = y + dy;
 
-                if (isValidMove(x, y, targetX, targetY)) {
-                    moves.push({ x: targetX, y: targetY });
+                // Sprawdź czy cel jest w rozszerzonych granicach (włączając bramki)
+                if (targetX >= 0 && targetX <= LOGICAL_COLS && targetY >= 0 && targetY <= LOGICAL_ROWS) {
+                    if (isValidMove(x, y, targetX, targetY)) {
+                        moves.push({ x: targetX, y: targetY });
+                    }
                 }
             }
         }
