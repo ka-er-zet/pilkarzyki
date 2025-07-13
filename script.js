@@ -2,10 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const statusDisplay = document.getElementById('status');
-    const newGameBtn = document.getElementById('newGameBtn');
     const winModal = document.getElementById('winModal');
     const winMessage = document.getElementById('winMessage');
     const modalNewGameBtn = document.getElementById('modalNewGameBtn');
+    const ronaldoJersey = document.getElementById('ronaldoJersey');
+    const neymarJersey = document.getElementById('neymarJersey');
 
     // --- Konfiguracja Gry ---
     const PLAYER_NAMES = [null, 'Ronaldo', 'Neymar']; // Indeks 0 nieużywany
@@ -16,15 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let DOT_RADIUS; // Promień kropki, obliczany dynamicznie
 
     // Kolory
-    const PITCH_COLOR = '#6abf69';
+    const PITCH_COLOR = '#8bc78a'; // Jaśniejszy, bledszy zielony
     const LINE_COLOR = '#FFF';
     const DOT_COLOR = '#DDD';
     const BORDER_COLOR = '#FFF';
     const BALL_COLOR_P1 = '#E30613'; // Czerwony (Ronaldo - Portugalia/Man Utd)
     const BALL_COLOR_P2 = '#FFD700'; // Żółty (Neymar - Brazylia)
     const PATH_COLOR = '#FFFFFF80'; // Półprzezroczysty biały
-    const GOAL_COLOR_P1 = '#E3061340'; // Bramka Ronaldo
-    const GOAL_COLOR_P2 = '#FFD70040'; // Bramka Neymara
+    const GOAL_COLOR_P1 = '#E30613AA'; // Bardziej wyrazisty czerwony dla bramki Ronaldo
+    const GOAL_COLOR_P2 = '#FFD700AA'; // Bardziej wyrazisty żółty dla bramki Neymara
 
     // --- Stan Gry ---
     let currentPlayer;
@@ -78,28 +79,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resizeAndRedraw() {
-        // 1. Oblicz optymalny rozmiar canvasa na podstawie dostępnego miejsca i proporcji
-        // Używamy wartości procentowych podobnych do tych w CSS (max-height: 80vh, max-width: 95vw)
-        const maxHeight = window.innerHeight * 0.80;
-        const maxWidth = window.innerWidth * 0.95;
-
+        // Oblicz dostępne miejsce z marginesem (uwzględniając padding CSS body)
+        const margin = 40; // Zwiększone z 20 na 40, aby uwzględnić padding CSS
+        const availableWidth = window.innerWidth - margin * 2;
+        const availableHeight = window.innerHeight - margin * 2;
+        
         const aspectRatio = LOGICAL_COLS / LOGICAL_ROWS;
 
-        let newWidth = maxWidth;
+        // Zacznij od szerokości i oblicz wysokość
+        let newWidth = availableWidth;
         let newHeight = newWidth / aspectRatio;
 
-        if (newHeight > maxHeight) {
-            newHeight = maxHeight;
+        // Jeśli wysokość jest za duża, skaluj od wysokości
+        if (newHeight > availableHeight) {
+            newHeight = availableHeight;
             newWidth = newHeight * aspectRatio;
         }
 
-        // 2. Ustaw fizyczne wymiary canvasa (to czyści canvas)
+        // Minimalny rozmiar
+        newWidth = Math.max(newWidth, 300);
+        newHeight = Math.max(newHeight, 300);
+
+        // Ustaw wymiary canvasa
         canvas.width = newWidth;
         canvas.height = newHeight;
 
-        // 3. Przelicz zmienne zależne od rozmiaru
+        // Usuń style CSS, które mogą powodować rozciągnięcie
+        canvas.style.width = '';
+        canvas.style.height = '';
+        canvas.style.display = 'block';
+        canvas.style.margin = '0 auto'; // Usuń dodatkowy margines, bo padding jest w CSS
+
+        // Przelicz zmienne zależne od rozmiaru
         GRID_SIZE = canvas.width / LOGICAL_COLS;
-        // Skalujemy promień kropki, aby wyglądał dobrze na każdym rozmiarze
         DOT_RADIUS = GRID_SIZE / 12;
 
         drawBoard();
@@ -208,34 +220,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         ctx.stroke();
 
-        // Rysowanie piłki z numerem koszulki
+        // Rysowanie piłki z ikoną koszulki (bez okręgu tła)
         const ballX = ballPos.x * GRID_SIZE;
         const ballY = ballPos.y * GRID_SIZE;
         const playerTokenRadius = DOT_RADIUS * 2.8;
 
-        // Rysowanie tła (kółka) dla gracza
-        ctx.beginPath();
-        ctx.arc(ballX, ballY, playerTokenRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = (currentPlayer === 1) ? BALL_COLOR_P1 : BALL_COLOR_P2;
-        ctx.fill();
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Rysowanie numeru na koszulce
-        const jerseyNumber = PLAYER_JERSEYS[currentPlayer];
-        const fontSize = playerTokenRadius * 1.3; // Dopasuj rozmiar czcionki do tokenu
-        ctx.font = `bold ${fontSize}px sans-serif`;
-        // Zmiana koloru czcionki dla lepszej czytelności
-        if (currentPlayer === 2) { // Neymar - żółta koszulka, ciemnozielony numer
-            ctx.fillStyle = '#008000'; // Ciemnozielony numer
-        } else { // Ronaldo - czerwona koszulka, żółty numer
-            ctx.fillStyle = '#FFFF00'; // Żółty numer
-        }
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        // Drobna korekta pionowa dla lepszego wyglądu
-        ctx.fillText(jerseyNumber, ballX, ballY + fontSize * 0.05); 
+        // Rysowanie ikony koszulki zamiast numeru - znacznie powiększonej i bez tła
+        const jerseyImg = (currentPlayer === 1) ? ronaldoJersey : neymarJersey;
+        const iconSize = GRID_SIZE * 0.8; // Znacznie większa ikona - 80% rozmiaru komórki siatki
+        
+        // Sprawdź, czy ikona jest załadowana przed rysowaniem
+        if (jerseyImg.complete && jerseyImg.naturalHeight !== 0) {
+            ctx.drawImage(
+                jerseyImg, 
+                ballX - iconSize / 2, 
+                ballY - iconSize / 2, 
+                iconSize, 
+                iconSize
+            );
+        } else {
+            // Fallback: rysuj okrąg z numerem, jeśli ikona nie jest załadowana
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, playerTokenRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = (currentPlayer === 1) ? BALL_COLOR_P1 : BALL_COLOR_P2;
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            const jerseyNumber = PLAYER_JERSEYS[currentPlayer];
+            const fontSize = playerTokenRadius * 1.3;
+            ctx.font = `bold ${fontSize}px sans-serif`;
+            ctx.fillStyle = (currentPlayer === 2) ? '#008000' : '#FFFF00';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(jerseyNumber, ballX, ballY + fontSize * 0.05);
+        } 
     }
     
 
@@ -256,12 +276,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
 
-        // Znajdź najbliższy punkt siatki
-        const targetX = Math.round(mouseX / GRID_SIZE);
-        const targetY = Math.round(mouseY / GRID_SIZE);
+        // Skaluj współrzędne myszy do rzeczywistych wymiarów canvasa
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const scaledMouseX = mouseX * scaleX;
+        const scaledMouseY = mouseY * scaleY;
 
-        if (isValidMove(ballPos.x, ballPos.y, targetX, targetY)) {
-            makeMove(targetX, targetY);
+        // Znajdź najbliższy punkt siatki
+        const targetX = Math.round(scaledMouseX / GRID_SIZE);
+        const targetY = Math.round(scaledMouseY / GRID_SIZE);
+
+        // Debug: sprawdź czy kliknięcie jest w prawidłowych granicach
+        if (targetX >= 0 && targetX < LOGICAL_COLS && targetY >= 0 && targetY < LOGICAL_ROWS) {
+            if (isValidMove(ballPos.x, ballPos.y, targetX, targetY)) {
+                makeMove(targetX, targetY);
+            }
         }
     }
 
@@ -468,7 +497,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resizeTimer = setTimeout(resizeAndRedraw, 100); // Czekaj 100ms po ostatniej zmianie rozmiaru
     });
     canvas.addEventListener('click', handleCanvasClick);
-    newGameBtn.addEventListener('click', init);
     modalNewGameBtn.addEventListener('click', init);
 
     // --- Start Gry ---
