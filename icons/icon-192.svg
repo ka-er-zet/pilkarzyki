@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tło - boisko -->
+  <rect width="192" height="192" fill="#8bc78a" rx="20"/>
+  
+  <!-- Boisko (prostokąt wewnętrzny) -->
+  <rect x="24" y="32" width="144" height="128" fill="none" stroke="#ffffff" stroke-width="3" rx="4"/>
+  
+  <!-- Bramka górna -->
+  <rect x="72" y="32" width="48" height="12" fill="none" stroke="#ffffff" stroke-width="3"/>
+  <!-- Bramka dolna -->
+  <rect x="72" y="148" width="48" height="12" fill="none" stroke="#ffffff" stroke-width="3"/>
+  
+  <!-- Środek boiska -->
+  <circle cx="96" cy="96" r="20" fill="none" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="96" cy="96" r="2" fill="#ffffff"/>
+  
+  <!-- Koszulka Ronaldo (czerwona, lewa strona) -->
+  <g transform="translate(48, 60)">
+    <path d="M0 8 L8 0 L24 0 L32 8 L32 40 L24 48 L8 48 L0 40 Z" fill="#E30613"/>
+    <circle cx="16" cy="16" r="6" fill="#ffffff"/>
+    <text x="16" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#E30613">7</text>
+  </g>
+  
+  <!-- Koszulka Neymar (żółta, prawa strona) -->
+  <g transform="translate(112, 60)">
+    <path d="M0 8 L8 0 L24 0 L32 8 L32 40 L24 48 L8 48 L0 40 Z" fill="#FFD700"/>
+    <circle cx="16" cy="16" r="6" fill="#ffffff"/>
+    <text x="16" y="22" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#FFD700">10</text>
+  </g>
+  
+  <!-- Piłka w środku -->
+  <circle cx="96" cy="96" r="8" fill="#ffffff" stroke="#000000" stroke-width="1"/>
+  <path d="M88 96 L104 96 M96 88 L96 104" stroke="#000000" stroke-width="1"/>
+  
+  <!-- Tytuł gry -->
+  <text x="96" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#ffffff">R vs N</text>
+</svg>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tło - boisko -->
+  <rect width="512" height="512" fill="#8bc78a" rx="50"/>
+  
+  <!-- Boisko (prostokąt wewnętrzny) -->
+  <rect x="64" y="80" width="384" height="352" fill="none" stroke="#ffffff" stroke-width="8" rx="10"/>
+  
+  <!-- Bramka górna -->
+  <rect x="192" y="80" width="128" height="32" fill="none" stroke="#ffffff" stroke-width="8"/>
+  <!-- Bramka dolna -->
+  <rect x="192" y="400" width="128" height="32" fill="none" stroke="#ffffff" stroke-width="8"/>
+  
+  <!-- Środek boiska -->
+  <circle cx="256" cy="256" r="50" fill="none" stroke="#ffffff" stroke-width="5"/>
+  <circle cx="256" cy="256" r="5" fill="#ffffff"/>
+  
+  <!-- Koszulka Ronaldo (czerwona, lewa strona) -->
+  <g transform="translate(120, 160)">
+    <path d="M0 20 L20 0 L64 0 L84 20 L84 100 L64 120 L20 120 L0 100 Z" fill="#E30613"/>
+    <circle cx="42" cy="40" r="16" fill="#ffffff"/>
+    <text x="42" y="52" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#E30613">7</text>
+    <text x="42" y="90" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#ffffff">RONALDO</text>
+  </g>
+  
+  <!-- Koszulka Neymar (żółta, prawa strona) -->
+  <g transform="translate(308, 160)">
+    <path d="M0 20 L20 0 L64 0 L84 20 L84 100 L64 120 L20 120 L0 100 Z" fill="#FFD700"/>
+    <circle cx="42" cy="40" r="16" fill="#ffffff"/>
+    <text x="42" y="52" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#FFD700">10</text>
+    <text x="42" y="90" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#000000">NEYMAR</text>
+  </g>
+  
+  <!-- Piłka w środku -->
+  <circle cx="256" cy="256" r="20" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+  <path d="M236 256 L276 256 M256 236 L256 276" stroke="#000000" stroke-width="2"/>
+  <circle cx="256" cy="256" r="15" fill="none" stroke="#000000" stroke-width="1"/>
+  
+  <!-- Dodatkowe linie na piłce -->
+  <path d="M244 244 L268 268 M268 244 L244 268" stroke="#000000" stroke-width="1"/>
+  
+  <!-- Tytuł gry -->
+  <text x="256" y="50" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#ffffff">RONALDO vs NEYMAR</text>
+  
+  <!-- Dodatkowe elementy boiska -->
+  <!-- Pole karne górne -->
+  <rect x="160" y="80" width="192" height="48" fill="none" stroke="#ffffff" stroke-width="3"/>
+  <!-- Pole karne dolne -->
+  <rect x="160" y="384" width="192" height="48" fill="none" stroke="#ffffff" stroke-width="3"/>
+</svg>
